@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maggi CRUNCH | No Stove. All Crunch.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        maggiYellow: '#FFCC00',
+                        maggiRed: '#E31837',
+                        maggiDarkRed: '#B00E26',
+                        maggiDark: '#121212',
+                        crunchOrange: '#FF5722',
+                    },
+                    fontFamily: {
+                        heading: ['Fredoka', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        },
+                        pop: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '70%': { transform: 'scale(1.1)' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-12px) rotate(2deg)' },
+                        }
+                    },
+                    animation: {
+                        wiggle: 'wiggle 0.2s ease-in-out infinite',
+                        pop: 'pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        float: 'float 4s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .yellow-glow {
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.35);
+        }
+        .red-glow {
+            box-shadow: 0 0 40px rgba(227, 24, 55, 0.4);
+        }
+        .comic-border {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+        }
+        .comic-border-red {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #E31837;
+        }
+        .comic-border-yellow {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #FFCC00;
+        }
+        .noise-bg {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E31837;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFCC00;
+        }
+    </style>
+</head>
+<body class="noise-bg antialiased selection:bg-maggiYellow selection:text-black">
+
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 py-3 bg-black/80 backdrop-blur-md border-b-2 border-maggiYellow/30">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="bg-maggiYellow px-3 py-1 rounded-lg transform -rotate-2 border-2 border-black font-heading text-black text-xl font-bold tracking-wider shadow-[3px_3px_0px_#E31837]">
+                    Maggi
+                </div>
+                <span class="font-heading text-2xl font-black text-maggiRed tracking-wider uppercase drop-shadow-[0_2px_0_#FFCC00]">
+                    CRUNCH
+                </span>
+                <span class="hidden sm:inline-block bg-maggiRed text-white text-xs font-bold px-2 py-0.5 rounded-full border border-black uppercase tracking-widest">
+                    Pitch Edition
+                </span>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-6 font-heading font-bold text-sm tracking-wide">
+                <a href="#smash-zone" class="hover:text-maggiYellow transition-colors">SMASH ZONE</a>
+                <a href="#products" class="hover:text-maggiYellow transition-colors">THE LINEUP</a>
+                <a href="#simulator" class="hover:text-maggiYellow transition-colors">SHAKE SIMULATOR</a>
+                <a href="#culture" class="hover:text-maggiYellow transition-colors">3 AM HERO</a>
+                <a href="#deck" class="hover:text-maggiYellow transition-colors">PITCH DECK</a>
+            </nav>
+
+            <!-- CTA / Sound Toggle -->
+            <div class="flex items-center gap-3">
+                <button id="soundToggle" onclick="toggleAudio()" class="bg-zinc-800 hover:bg-zinc-700 text-maggiYellow p-2.5 rounded-xl border-2 border-zinc-700 transition-all text-sm font-bold flex items-center gap-2">
+                    <i id="soundIcon" class="fas fa-volume-up"></i>
+                    <span class="hidden sm:inline text-xs">AUDIO ON</span>
+                </button>
+                <a href="#smash-zone" class="bg-maggiYellow hover:bg-yellow-300 text-black font-heading font-black px-5 py-2.5 rounded-xl border-2 border-black shadow-[4px_4px_0px_#E31837] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all uppercase tracking-wider text-sm">
+                    Smash Now
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20">
+
+        <section id="smash-zone" class="min-h-screen relative flex items-center justify-center py-12 px-4 overflow-hidden">
+            <!-- Background Decorative Elements -->
+            <div class="absolute inset-0 bg-gradient-to-b from-maggiRed/20 via-black to-black pointer-events-none"></div>
+            <div class="absolute top-1/4 left-10 w-72 h-72 bg-maggiYellow/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-1/4 right-10 w-80 h-80 bg-maggiRed/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+                
+                <!-- Hero Left: Pitch Hook & Typography -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center gap-2 bg-maggiYellow/10 border-2 border-maggiYellow px-4 py-1.5 rounded-full text-maggiYellow font-heading font-bold text-sm tracking-widest uppercase animate-pulse">
+                        <i class="fas fa-bolt"></i> Official Gen-Z Product Pitch Concept
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl xl:text-8xl font-black uppercase font-heading leading-none tracking-tight">
+                        <span class="block text-white drop-shadow-[0_4px_0_#000]">NO STOVE.</span>
+                        <span class="block text-maggiYellow drop-shadow-[0_6px_0_#E31837]">ALL CRUNCH.</span>
+                    </h1>
+
+                    <p class="text-lg md:text-xl text-zinc-300 font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        Why boil water when the raw crunch hits different? We took the world’s favorite guilty pleasure, pre-shredded it into bite-sized crisps, and wrapped it in a dual-chamber <span class="text-maggiYellow font-bold">Shake Bag</span>.
+                    </p>
+
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
+                        <div class="bg-zinc-900 border-2 border-zinc-700 px-4 py-3 rounded-2xl flex items-center gap-3">
+                            <span class="text-2xl">🔥</span>
+                            <div class="text-left">
+                                <p class="text-xs text-zinc-400 font-bold uppercase">Preparation Time</p>
+                                <p class="text-base font-black text-maggiYellow font-heading">0 MINUTES</p>
+                            </div>
+                        </div>
+                        <div class="bg-zinc-900 border-2 border-zinc-700 px-4 py-3 rounded-2xl flex items-center gap-3">
+                            <span class="text-2xl">💥</span>
+                            <div class="text-left">
+                                <p class="text-xs text-zinc-400 font-bold uppercase">Satisfaction Level</p>
+                                <p class="text-base font-black text-maggiRed font-heading">100% UNFILTERED</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Callout Tag -->
+                    <div class="pt-4 flex items-center justify-center lg:justify-start gap-2 text-zinc-400 text-sm">
+                        <i class="fas fa-hand-pointer text-maggiYellow animate-bounce"></i>
+                        <span>Click or tap the bag on the right to test the <strong>CRUNCH ENGINE</strong>!</span>
+                    </div>
+                </div>
+
+                <!-- Hero Right: Interactive Smash The Bag Mini-Game -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center">
+                    <div class="relative w-full max-w-md aspect-square flex items-center justify-center">
+                        
+                        <!-- Canvas for particle masala bursts -->
+                        <canvas id="masalaCanvas" class="absolute inset-0 pointer-events-none z-30 w-full h-full"></canvas>
+
+                        <!-- Floating Badge -->
+                        <div class="absolute -top-4 -right-2 z-20 bg-maggiRed text-maggiYellow font-heading font-black text-sm px-4 py-2 rounded-2xl border-2 border-black transform rotate-12 shadow-[4px_4px_0px_#000] animate-bounce">
+                            SMASH ME! 💥
+                        </div>
+
+                        <!-- Main Interactive Bag Card -->
+                        <div id="smashBagContainer" onclick="smashBag(event)" class="cursor-pointer relative z-20 w-72 h-96 bg-gradient-to-br from-maggiYellow via-amber-400 to-yellow-500 rounded-3xl comic-border-red p-6 flex flex-col justify-between items-center select-none transition-transform duration-100 hover:scale-105 active:scale-95 group">
+                            
+                            <!-- Bag Top Seal -->
+                            <div class="w-full border-b-4 border-dashed border-black/30 pb-2 flex justify-between items-center text-black font-bold text-xs uppercase tracking-widest">
+                                <span>TEAR & SHAKE</span>
+                                <i class="fas fa-scissors"></i>
+                            </div>
+
+                            <!-- Bag Graphics -->
+                            <div class="text-center my-auto transform group-hover:scale-110 transition-transform">
+                                <div class="bg-maggiRed px-4 py-1.5 rounded-lg border-2 border-black transform -rotate-3 inline-block shadow-[3px_3px_0px_#000]">
+                                    <span class="font-heading text-2xl font-bold text-maggiYellow">Maggi</span>
+                                </div>
+                                <h2 class="font-heading font-black text-4xl text-black uppercase tracking-tight mt-2 drop-shadow-[0_2px_0_#fff]">
+                                    CRUNCH
+                                </h2>
+                                <div class="bg-black text-maggiYellow text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block mt-1">
+                                    Classic Masala
+                                </div>
+
+                                <!-- Smash Meter / Visual representation -->
+                                <div class="mt-6 flex justify-center items-center gap-2">
+                                    <span id="bagNoodleVisual" class="text-5xl transition-all duration-200">🍜</span>
+                                </div>
+                            </div>
+
+                            <!-- Bag Footer Instructions -->
+                            <div class="w-full bg-black text-white p-3 rounded-xl border-2 border-black text-center">
+                                <p class="font-heading font-bold text-xs uppercase text-maggiYellow">
+                                    Smash Count: <span id="smashCount" class="text-white text-base font-black">0</span>
+                                </p>
+                                <p id="smashStatus" class="text-[10px] text-zinc-400 font-sans uppercase">Tap bag to crush noodles!</p>
+                            </div>
+                        </div>
+
+                        <!-- Shadow Base -->
+                        <div class="absolute bottom-4 w-60 h-8 bg-black/40 rounded-full blur-md"></div>
+                    </div>
+
+                    <!-- Reset & Audio Indicator -->
+                    <div class="mt-4 flex items-center gap-4 text-xs text-zinc-400 font-heading">
+                        <button onclick="resetSmash()" class="hover:text-maggiYellow underline transition-colors">
+                            <i class="fas fa-redo-alt mr-1"></i> Reset Bag
+                        </button>
+                        <span>•</span>
+                        <span id="crunchRating" class="text-maggiYellow font-bold uppercase">Status: Intact Noodle Block</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="products" class="py-20 px-4 bg-zinc-950 border-t-2 border-zinc-800">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                    <div class="bg-maggiRed/10 border border-maggiRed text-maggiRed font-heading font-bold px-4 py-1 rounded-full inline-block text-xs uppercase tracking-widest">
+                        Product Innovations
+                    </div>
+                    <h2 class="text-4xl md:text-6xl font-black font-heading uppercase text-white">
+                        THE <span class="text-maggiYellow">CRUNCH</span> LINEUP
+                    </h2>
+                    <p class="text-zinc-400 text-base md:text-lg">
+                        Designed for zero-prep snacking. Engineered for maximum flavor distribution and crunch density.
+                    </p>
+                </div>
+
+                <!-- Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Product 1: The Shake Bag -->
+                    <div class="bg-zinc-900 border-2 border-zinc-800 rounded-3xl p-8 hover:border-maggiYellow transition-all duration-300 relative overflow-hidden group">
+                        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-maggiYellow/10 rounded-full blur-2xl group-hover:bg-maggiYellow/20 transition-all"></div>
+                        
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="bg-maggiYellow text-black font-heading font-black text-xs px-3 py-1.5 rounded-lg border border-black uppercase tracking-wider">
+                                Hero SKU • 75g
+                            </span>
+                            <span class="text-2xl">🔥</span>
+                        </div>
+
+                        <h3 class="text-3xl font-black font-heading text-white uppercase mb-2">
+                            MAGGI CRUNCH <span class="text-maggiYellow">SHAKE BAG</span>
+                        </h3>
+                        <p class="text-zinc-400 text-sm mb-6 leading-relaxed">
+                            Full block of oven-roasted crispy noodle strands inside a dual-layer pouch. Crush with your palm, tear the seasoning packet, shake vigorously, and devour.
+                        </p>
+
+                        <!-- Key Features Checklist -->
+                        <ul class="space-y-3 mb-8 text-sm text-zinc-300">
+                            <li class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-maggiYellow"></i>
+                                <span>Dual-chamber foil pouch keeps seasoning fresh</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-maggiYellow"></i>
+                                <span>Includes micro-encapsulated Heinz Tomato Tang granules</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-maggiYellow"></i>
+                                <span>Ergonomic smash zone target print on rear</span>
+                            </li>
+                        </ul>
+
+                        <div class="pt-4 border-t border-zinc-800 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-zinc-500 uppercase font-bold">Target Retail</p>
+                                <p class="text-2xl font-black text-maggiYellow font-heading">$1.49 / £1.20</p>
+                            </div>
+                            <button onclick="openModal('shake-bag')" class="bg-zinc-800 hover:bg-maggiRed hover:text-white text-maggiYellow font-heading font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider border border-zinc-700 transition-all">
+                                Specs & Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product 2: Individual Snack Bites -->
+                    <div class="bg-zinc-900 border-2 border-zinc-800 rounded-3xl p-8 hover:border-maggiRed transition-all duration-300 relative overflow-hidden group">
+                        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-maggiRed/10 rounded-full blur-2xl group-hover:bg-maggiRed/20 transition-all"></div>
+                        
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="bg-maggiRed text-white font-heading font-black text-xs px-3 py-1.5 rounded-lg border border-black uppercase tracking-wider">
+                                On-The-Go • 35g
+                            </span>
+                            <span class="text-2xl">⚡</span>
+                        </div>
+
+                        <h3 class="text-3xl font-black font-heading text-white uppercase mb-2">
+                            CRUNCH <span class="text-maggiRed">SNACK BITES</span>
+                        </h3>
+                        <p class="text-zinc-400 text-sm mb-6 leading-relaxed">
+                            Pre-crushed, bite-sized cluster squares already infused with roasted masala butter and tomato dust. Built for single-handed snacking during gaming or study sessions.
+                        </p>
+
+                        <!-- Key Features Checklist -->
+                        <ul class="space-y-3 mb-8 text-sm text-zinc-300">
+                            <li class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-maggiRed"></i>
+                                <span>Zero preparation required — ready straight from bag</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-maggiRed"></i>
+                                <span>No-mess dust lock coating keeps fingers clean</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-maggiRed"></i>
+                                <span>Pocket-sized grab & go format</span>
+                            </li>
+                        </ul>
+
+                        <div class="pt-4 border-t border-zinc-800 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-zinc-500 uppercase font-bold">Target Retail</p>
+                                <p class="text-2xl font-black text-maggiRed font-heading">$0.89 / £0.75</p>
+                            </div>
+                            <button onclick="openModal('snack-bites')" class="bg-zinc-800 hover:bg-maggiYellow hover:text-black text-white font-heading font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider border border-zinc-700 transition-all">
+                                Specs & Details <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="simulator" class="py-20 px-4 relative overflow-hidden bg-gradient-to-b from-black via-zinc-900 to-black">
+            <div class="max-w-5xl mx-auto">
+                
+                <div class="bg-zinc-950 border-4 border-black comic-border-yellow rounded-3xl p-6 md:p-10 relative">
+                    
+                    <div class="text-center space-y-3 mb-10">
+                        <span class="bg-maggiYellow text-black font-heading font-black text-xs px-3 py-1 rounded-full uppercase">
+                            Interactive Lab
+                        </span>
+                        <h2 class="text-3xl md:text-5xl font-black font-heading text-white uppercase">
+                            SEASONING <span class="text-maggiYellow">SHAKE SIMULATOR</span>
+                        </h2>
+                        <p class="text-zinc-400 text-sm max-w-xl mx-auto">
+                            Pick your spice profile, adjust the masala ratio, and hit <strong>SHAKE BAG</strong> to calculate flavor coverage!
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                        
+                        <!-- Controls Column -->
+                        <div class="md:col-span-6 space-y-6">
+                            
+                            <!-- Flavor Selection -->
+                            <div>
+                                <label class="block text-xs font-heading font-bold text-zinc-400 uppercase mb-3">
+                                    1. Choose Spice Profile
+                                </label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="selectFlavor('masala')" id="btn-masala" class="flavor-btn active bg-maggiYellow text-black font-heading font-bold p-3 rounded-xl border-2 border-black text-xs uppercase text-center transition-all">
+                                        Classic Masala
+                                    </button>
+                                    <button onclick="selectFlavor('heinz')" id="btn-heinz" class="flavor-btn bg-zinc-800 text-white font-heading font-bold p-3 rounded-xl border-2 border-zinc-700 text-xs uppercase text-center transition-all hover:border-maggiRed">
+                                        Heinz Tangy
+                                    </button>
+                                    <button onclick="selectFlavor('fire')" id="btn-fire" class="flavor-btn bg-zinc-800 text-white font-heading font-bold p-3 rounded-xl border-2 border-zinc-700 text-xs uppercase text-center transition-all hover:border-crunchOrange">
+                                        Fire Spice
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Spice Intensity Slider -->
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-heading font-bold text-zinc-400 uppercase">
+                                        2. Masala Packet Ratio
+                                    </label>
+                                    <span id="spiceVal" class="text-maggiYellow font-bold font-heading text-sm">75% (Flavor Bomb)</span>
+                                </div>
+                                <input type="range" id="spiceSlider" min="25" max="100" value="75" oninput="updateSpice(this.value)" class="w-full accent-maggiYellow bg-zinc-800 rounded-lg cursor-pointer h-3">
+                            </div>
+
+                            <!-- Action Button -->
+                            <button id="shakeBtn" onclick="triggerSimulatorShake()" class="w-full bg-maggiRed hover:bg-maggiDarkRed text-white font-heading font-black py-4 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#FFCC00] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all uppercase tracking-wider text-base flex items-center justify-center gap-3">
+                                <i class="fas fa-hand-rock"></i>
+                                <span>SHAKE THE BAG NOW!</span>
+                            </button>
+
+                        </div>
+
+                        <!-- Visual Container Column -->
+                        <div class="md:col-span-6 flex flex-col items-center justify-center bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-6 relative min-h-[280px]">
+                            
+                            <!-- Bag Container Visual -->
+                            <div id="simBag" class="w-40 h-52 bg-gradient-to-b from-maggiYellow to-amber-500 rounded-2xl border-4 border-black p-4 flex flex-col justify-between items-center relative transition-transform">
+                                
+                                <div class="text-center">
+                                    <div class="bg-maggiRed text-white text-[9px] font-bold px-2 py-0.5 rounded border border-black inline-block">
+                                        MAGGI
+                                    </div>
+                                    <p id="simFlavorLabel" class="font-heading text-xs font-black text-black uppercase mt-1">
+                                        CLASSIC MASALA
+                                    </p>
+                                </div>
+
+                                <!-- Particles inside sim -->
+                                <div id="simParticles" class="w-full h-20 relative overflow-hidden flex items-center justify-center">
+                                    <div class="text-3xl">🧩 🍿 💥</div>
+                                </div>
+
+                                <div class="w-full bg-black text-maggiYellow text-[10px] font-heading font-bold text-center py-1 rounded border border-black">
+                                    SHAKE ZONE
+                                </div>
+                            </div>
+
+                            <!-- Results Meter -->
+                            <div class="w-full mt-6 space-y-2">
+                                <div class="flex justify-between text-xs font-bold font-heading">
+                                    <span class="text-zinc-400">FLAVOR COVERAGE:</span>
+                                    <span id="coverageText" class="text-maggiYellow">85% EVEN DISTRIBUTION</span>
+                                </div>
+                                <div class="w-full bg-zinc-800 rounded-full h-3 overflow-hidden border border-zinc-700">
+                                    <div id="coverageBar" class="bg-gradient-to-r from-maggiYellow to-maggiRed h-full transition-all duration-500" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section id="culture" class="py-20 px-4 bg-zinc-950 border-t-2 border-zinc-800">
+            <div class="max-w-7xl mx-auto space-y-16">
+                
+                <!-- Hero Culture Banner -->
+                <div class="bg-gradient-to-r from-maggiDarkRed via-black to-zinc-900 border-4 border-black comic-border-yellow rounded-3xl p-8 md:p-12 relative overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+                        <div class="md:col-span-7 space-y-4">
+                            <span class="bg-maggiYellow text-black font-heading font-black text-xs px-3 py-1 rounded-full uppercase">
+                                Culture & Community
+                            </span>
+                            <h2 class="text-4xl md:text-6xl font-black font-heading text-white uppercase">
+                                YOUR <span class="text-maggiYellow">3 AM HERO.</span>
+                            </h2>
+                            <p class="text-zinc-300 text-base leading-relaxed">
+                                Late night study sessions. Midnight gaming queues. Mid-commute cravings. Maggi CRUNCH gives explicit permission to skip the kitchen entirely.
+                            </p>
+                            <div class="pt-2 flex flex-wrap gap-4 text-xs font-heading font-bold text-maggiYellow">
+                                <span>#SmashAndShake</span>
+                                <span>•</span>
+                                <span>#NoBoilNeeded</span>
+                                <span>•</span>
+                                <span>#3AMHero</span>
+                            </div>
+                        </div>
+                        <div class="md:col-span-5 flex justify-center">
+                            <div class="bg-zinc-900/90 border-2 border-maggiYellow p-6 rounded-2xl text-center space-y-3">
+                                <i class="fas fa-moon text-4xl text-maggiYellow"></i>
+                                <h3 class="font-heading font-bold text-xl text-white">The Viral TikTok Challenge</h3>
+                                <p class="text-xs text-zinc-400">"Show us your most creative way to smash the bag — fist bump, elbow drop, or desk slap."</p>
+                                <div class="text-maggiRed font-heading font-bold text-xs uppercase">Est. 50M+ Views Goal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Merch Section -->
+                <div>
+                    <div class="text-center max-w-xl mx-auto mb-10">
+                        <h3 class="text-3xl font-black font-heading uppercase text-white">
+                            LIMITED EDITION <span class="text-maggiYellow">CRUNCH GEAR</span>
+                        </h3>
+                        <p class="text-zinc-400 text-sm">Official merch drop for top creators and brand ambassadors.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <!-- Merch Item 1 -->
+                        <div class="bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-6 text-center hover:border-maggiYellow transition-all group">
+                            <div class="text-6xl mb-4 group-hover:scale-110 transition-transform">🧥</div>
+                            <span class="bg-maggiYellow/10 text-maggiYellow text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Apparel</span>
+                            <h4 class="font-heading font-black text-xl text-white uppercase mt-2">Crunch Squad Hoodie</h4>
+                            <p class="text-xs text-zinc-400 mt-1">Heavyweight oversized hoodie with front-pocket sachet holder.</p>
+                        </div>
+
+                        <!-- Merch Item 2 -->
+                        <div class="bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-6 text-center hover:border-maggiRed transition-all group">
+                            <div class="text-6xl mb-4 group-hover:scale-110 transition-transform">🧢</div>
+                            <span class="bg-maggiRed/10 text-maggiRed text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Accessories</span>
+                            <h4 class="font-heading font-black text-xl text-white uppercase mt-2">Masala Bucket Hat</h4>
+                            <p class="text-xs text-zinc-400 mt-1">Reversible dual-tone yellow & red street-style bucket hat.</p>
+                        </div>
+
+                        <!-- Merch Item 3 -->
+                        <div class="bg-zinc-900 border-2 border-zinc-800 rounded-2xl p-6 text-center hover:border-maggiYellow transition-all group sm:col-span-2 lg:col-span-1">
+                            <div class="text-6xl mb-4 group-hover:scale-110 transition-transform">🔨</div>
+                            <span class="bg-maggiYellow/10 text-maggiYellow text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Collectors</span>
+                            <h4 class="font-heading font-black text-xl text-white uppercase mt-2">Branded Smash Spoon</h4>
+                            <p class="text-xs text-zinc-400 mt-1">Heavy-duty food-grade mallet spoon for precision bag crushing.</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="deck" class="py-20 px-4 bg-black border-t-2 border-zinc-800">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                    <span class="bg-maggiYellow text-black font-heading font-black text-xs px-3 py-1 rounded-full uppercase">
+                        Executive Pitch Brief
+                    </span>
+                    <h2 class="text-4xl md:text-6xl font-black font-heading uppercase text-white">
+                        THE BUSINESS <span class="text-maggiRed">CASE</span>
+                    </h2>
+                    <p class="text-zinc-400 text-sm md:text-base">
+                        Why Nestlé & Kraft Heinz should execute this co-branded venture immediately.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div class="bg-zinc-900 border-2 border-zinc-800 p-6 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 bg-maggiYellow/10 rounded-xl flex items-center justify-center text-maggiYellow text-xl font-bold font-heading">
+                            01
+                        </div>
+                        <h3 class="font-heading font-black text-xl text-white uppercase">Zero Behavior Shift</h3>
+                        <p class="text-xs text-zinc-400 leading-relaxed">
+                            Millions of consumers already eat instant noodles raw. This product normalizes and monetizes an existing habit with optimized textures and safer food packaging.
+                        </p>
+                    </div>
+
+                    <div class="bg-zinc-900 border-2 border-zinc-800 p-6 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 bg-maggiRed/10 rounded-xl flex items-center justify-center text-maggiRed text-xl font-bold font-heading">
+                            02
+                        </div>
+                        <h3 class="font-heading font-black text-xl text-white uppercase">New Snacking Category</h3>
+                        <p class="text-xs text-zinc-400 leading-relaxed">
+                            Bridges the gap between instant meals and potato chips. Unlocks vending machines, impulse convenience store checkouts, and university dorm markets.
+                        </p>
+                    </div>
+
+                    <div class="bg-zinc-900 border-2 border-zinc-800 p-6 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 bg-maggiYellow/10 rounded-xl flex items-center justify-center text-maggiYellow text-xl font-bold font-heading">
+                            03
+                        </div>
+                        <h3 class="font-heading font-black text-xl text-white uppercase">Co-Branding Power</h3>
+                        <p class="text-xs text-zinc-400 leading-relaxed">
+                            Combining Maggi’s spice authority with Heinz’s tangy tomato iconic status creates instant global viral momentum and immediate retail buy-in.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Executive Summary Stat Bar -->
+                <div class="mt-12 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <p class="text-xs text-zinc-500 uppercase font-bold">Target Demographic</p>
+                        <p class="text-2xl font-black text-maggiYellow font-heading">Gen Z & Millennials</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-zinc-500 uppercase font-bold">Gross Margin Est.</p>
+                        <p class="text-2xl font-black text-maggiRed font-heading">68%</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-zinc-500 uppercase font-bold">Shelf Life</p>
+                        <p class="text-2xl font-black text-white font-heading">12 Months</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-zinc-500 uppercase font-bold">Channel</p>
+                        <p class="text-2xl font-black text-maggiYellow font-heading">Retail & D2C</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-black border-t border-zinc-800 py-10 px-4 text-center">
+        <div class="max-w-7xl mx-auto space-y-4">
+            <div class="flex items-center justify-center gap-2">
+                <span class="font-heading text-xl font-black text-maggiYellow">Maggi</span>
+                <span class="text-zinc-600 font-bold">✕</span>
+                <span class="font-heading text-xl font-black text-maggiRed">HEINZ</span>
+            </div>
+            <p class="text-xs text-zinc-500 max-w-md mx-auto">
+                This website is a conceptual brand pitch presentation created for creative & product design demonstration. All trademarks belong to their respective owners.
+            </p>
+            <p class="text-xs text-zinc-600 font-heading">
+                © 2026 Maggi CRUNCH Pitch Deck. Designed for maximum crunch.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Spec Modal -->
+    <div id="specModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-zinc-900 border-4 border-black comic-border-yellow rounded-3xl max-w-md w-full p-6 relative space-y-4">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <span class="bg-maggiYellow text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase font-heading">Spec Sheet</span>
+            <h3 id="modalTitle" class="text-2xl font-black font-heading text-white uppercase">Product Title</h3>
+            <div id="modalBody" class="text-xs text-zinc-300 space-y-3">
+                <!-- Content injected dynamically -->
+            </div>
+            <button onclick="closeModal()" class="w-full bg-maggiRed text-white font-heading font-bold py-2.5 rounded-xl text-xs uppercase">
+                Close Spec Window
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // State Variables
+        let smashCount = 0;
+        let soundEnabled = true;
+        let currentFlavor = 'masala';
+        let spiceLevel = 75;
+
+        // Audio Context for Web Audio API Crunch Sounds
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const toggleBtn = document.getElementById('soundToggle');
+            if (soundEnabled) {
+                icon.className = 'fas fa-volume-up';
+                toggleBtn.classList.remove('opacity-50');
+            } else {
+                icon.className = 'fas fa-volume-mute';
+                toggleBtn.classList.add('opacity-50');
+            }
+        }
+
+        // Web Audio synthesized procedural crunch sound
+        function playCrunchSound() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const bufferSize = audioCtx.sampleRate * 0.12; // 120ms crunch
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+                }
+
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1200 + Math.random() * 800;
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                noise.start();
+            } catch (e) {
+                console.log('Audio playback failed', e);
+            }
+        }
+
+        // Canvas Particle Effect setup
+        const canvas = document.getElementById('masalaCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class MasalaParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 12;
+                this.vy = (Math.random() - 0.5) * 12 - 3;
+                this.size = Math.random() * 6 + 3;
+                this.color = Math.random() > 0.5 ? '#FFCC00' : '#E31837';
+                this.alpha = 1;
+                this.decay = Math.random() * 0.03 + 0.02;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.2; // gravity
+                this.alpha -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = particles.filter(p => p.alpha > 0);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Main Smash Function
+        function smashBag(e) {
+            smashCount++;
+            document.getElementById('smashCount').innerText = smashCount;
+
+            // Trigger Crunch Sound
+            playCrunchSound();
+
+            // Bag Animation
+            const bag = document.getElementById('smashBagContainer');
+            bag.classList.add('animate-wiggle');
+            setTimeout(() => bag.classList.remove('animate-wiggle'), 200);
+
+            // Noodle visual change depending on count
+            const visual = document.getElementById('bagNoodleVisual');
+            const rating = document.getElementById('crunchRating');
+            const status = document.getElementById('smashStatus');
+
+            if (smashCount < 3) {
+                visual.innerText = '🍜';
+                rating.innerText = 'Status: Slightly Cracked Block';
+                status.innerText = 'Keep smashing for finer bites!';
+            } else if (smashCount < 8) {
+                visual.innerText = '🧩';
+                rating.innerText = 'Status: Ideal Bite-Sized Clusters';
+                status.innerText = 'PERFECT SHAKE ZONE!';
+            } else {
+                visual.innerText = '💥';
+                rating.innerText = 'Status: Ultra-Fine Masala Powdered Crunch!';
+                status.innerText = 'Ready to consume!';
+            }
+
+            // Spawn Particles at click position
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            for (let i = 0; i < 20; i++) {
+                particles.push(new MasalaParticle(clickX, clickY));
+            }
+        }
+
+        function resetSmash() {
+            smashCount = 0;
+            document.getElementById('smashCount').innerText = '0';
+            document.getElementById('bagNoodleVisual').innerText = '🍜';
+            document.getElementById('crunchRating').innerText = 'Status: Intact Noodle Block';
+            document.getElementById('smashStatus').innerText = 'Tap bag to crush noodles!';
+        }
+
+        // Simulator Logic
+        function selectFlavor(flavor) {
+            currentFlavor = flavor;
+            document.querySelectorAll('.flavor-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-maggiYellow', 'text-black');
+                btn.classList.add('bg-zinc-800', 'text-white');
+            });
+
+            const activeBtn = document.getElementById(`btn-${flavor}`);
+            activeBtn.classList.remove('bg-zinc-800', 'text-white');
+            activeBtn.classList.add('active', 'bg-maggiYellow', 'text-black');
+
+            const label = document.getElementById('simFlavorLabel');
+            if (flavor === 'masala') label.innerText = 'CLASSIC MASALA';
+            if (flavor === 'heinz') label.innerText = 'HEINZ TANGY BLEND';
+            if (flavor === 'fire') label.innerText = 'FIRE SPICE BOMB';
+
+            updateCoverage();
+        }
+
+        function updateSpice(val) {
+            spiceLevel = val;
+            document.getElementById('spiceVal').innerText = `${val}% (Flavor Ratio)`;
+            updateCoverage();
+        }
+
+        function updateCoverage() {
+            const bar = document.getElementById('coverageBar');
+            const text = document.getElementById('coverageText');
+            const percentage = Math.min(100, Math.round((spiceLevel / 100) * 95));
+            
+            bar.style.width = `${percentage}%`;
+            text.innerText = `${percentage}% EVEN DISTRIBUTION`;
+        }
+
+        function triggerSimulatorShake() {
+            playCrunchSound();
+            const simBag = document.getElementById('simBag');
+            simBag.classList.add('animate-bounce');
+            setTimeout(() => simBag.classList.remove('animate-bounce'), 600);
+        }
+
+        // Modal Logic
+        function openModal(type) {
+            const modal = document.getElementById('specModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+
+            if (type === 'shake-bag') {
+                title.innerText = 'Maggi Crunch Shake Bag';
+                body.innerHTML = `
+                    <p><strong>Net Weight:</strong> 75g (Full Meal Replacement Snack)</p>
+                    <p><strong>Packaging:</strong> Metallicized PET/PE barrier foil with dual tear notches.</p>
+                    <p><strong>Ingredients:</strong> Wheat flour, Palm oil, Maggi Blend Spices (Cumin, Turmeric, Garlic), Micro-encapsulated Heinz Tomato Solids.</p>
+                    <p><strong>Target Retail Price:</strong> $1.49 / unit</p>
+                `;
+            } else {
+                title.innerText = 'Crunch Individual Snack Bites';
+                body.innerHTML = `
+                    <p><strong>Net Weight:</strong> 35g (Single Portion Pocket Pack)</p>
+                    <p><strong>Packaging:</strong> Single-layer recyclable foil pouch.</p>
+                    <p><strong>Form Factor:</strong> Compressed 15mm square noodle clusters with spice binding.</p>
+                    <p><strong>Target Retail Price:</strong> $0.89 / unit</p>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('specModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
